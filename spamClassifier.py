@@ -3,40 +3,11 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.preprocessing.text import Tokenizer
 import nltk
-import requests
-import zipfile
-import io
-import os
 from nltk import word_tokenize, pos_tag
 from nltk.stem import WordNetLemmatizer
 from flask_cors import CORS
 import re
 import pickle
-
-# Function to download and unzip WordNet data
-def download_wordnet_data():
-    nltk_data_path = os.path.join(os.path.expanduser("~"), "nltk_data", "corpora")
-    wordnet_zip_path = os.path.join(nltk_data_path, "wordnet.zip")
-    
-    # Check if WordNet is already downloaded
-    if not os.path.exists(wordnet_zip_path):
-        url = "https://raw.githubusercontent.com/nltk/nltk_data/gh-pages/packages/corpora/wordnet.zip"
-        response = requests.get(url)
-        
-        if response.status_code == 200:
-            print("WordNet data download successful.")
-            # Unzip the WordNet zip file
-            with zipfile.ZipFile(io.BytesIO(response.content)) as zip_ref:
-                os.makedirs(nltk_data_path, exist_ok=True)
-                zip_ref.extractall(nltk_data_path)
-            print("WordNet data extracted successfully.")
-        else:
-            print(f"Failed to download WordNet data. Status code: {response.status_code}")
-    else:
-        print("WordNet data already exists.")
-
-# Download WordNet data if not already available
-download_wordnet_data()
 
 # Initialize Flask app
 app = Flask(__name__)
